@@ -12,7 +12,8 @@ function createWindow () {
     icon: path.join(__dirname, 'icona.ico') 
   })
 
-  win.loadFile(path.join(__dirname, 'build', 'index.html'))
+  // win.loadFile(path.join(__dirname, 'build', 'index.html')) // to jesli z buidla
+  win.loadURL('http://localhost:3000'); // to jesli z localhosta 
   win.webContents.openDevTools() 
 }
 
