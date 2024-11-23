@@ -25,6 +25,7 @@ function createWindow() {
   });
 
   win.loadURL('http://localhost:3000');
+  mainWindow.setTitle('TAPET.IO');
     // win.loadFile(path.join(__dirname, 'build', 'index.html'))
 }
 
@@ -38,9 +39,7 @@ app.whenReady().then(() => {
       .then(response => {
         const filePath = path.join(__dirname, 'temp-wallpaper.jpg');
         fs.writeFileSync(filePath, response.data);
-
         setWallpaper(filePath).then(()=>{
-          console.log("cxos");
         });
       })
       .catch(error => {
