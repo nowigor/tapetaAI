@@ -14,17 +14,18 @@ const __dirname = path.dirname(__filename);
 function createWindow() {
   const win = new BrowserWindow({
     width: 800,
-    height: 600,
+    height: 500,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       devTools: true
     },
     autoHideMenuBar: true,
-    icon: path.join(__dirname, 'icona.ico')
+    icon: path.join(__dirname, 'icona.ico'),
+    resizable: false
   });
 
-  // win.loadURL('http://localhost:3000');
-    win.loadFile(path.join(__dirname, 'build', 'index.html'))
+  win.loadURL('http://localhost:3000');
+    // win.loadFile(path.join(__dirname, 'build', 'index.html'))
 }
 
 app.whenReady().then(() => {
@@ -41,15 +42,6 @@ app.whenReady().then(() => {
         setWallpaper(filePath).then(()=>{
           console.log("cxos");
         });
-        // return wallpaper.set(filePath)
-        //   .then(() => {
-        //     console.log('Tapeta została ustawiona!');
-        //     return 'Tapeta została ustawiona!';
-        //   })
-        //   .catch(err => {
-        //     console.error('Błąd ustawiania tapety:', err);
-        //     throw err;
-        //   });
       })
       .catch(error => {
         console.error('Błąd pobierania obrazu:', error);
