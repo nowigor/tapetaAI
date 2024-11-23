@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { OpenAI } from "openai";
+import ImageGen from "./ImageGen";
 
 const openai = new OpenAI({
   apiKey: process.env.REACT_APP_OPENAI_API_KEY,
@@ -109,6 +110,8 @@ const SentenceGen = () => {
       <p>Zdanie: {renderSentence()}</p>
       <button onClick={generateFinalSentence}>Generuj pełne zdanie</button>
       {finalSentence && <p>Wygenerowane zdanie: {finalSentence}</p>}
+      <ImageGen sentance={finalSentence}/>
+
     </div>
   );
 };
