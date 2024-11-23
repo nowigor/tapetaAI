@@ -2,14 +2,15 @@ import axios from 'axios';
 import fs from 'fs';
 import {setWallpaper} from "wallpaper";
 
-async function downloadAndSetWallpaper(imageUrl, savePath) {
+async function downloadAndSetWallpaper(imageUrl) {
     try {
+        const savePath = "./" + generateFileName() +".png";
         const response = await axios({
             url: imageUrl,
             method: 'GET',
             responseType: 'stream',
         });
-        const writer = fs.createWriteStream(savePath);
+        const writer = fs.createWriteStream(savePath)
         response.data.pipe(writer);
         await new Promise((resolve, reject) => {
             writer.on('finish', resolve);
