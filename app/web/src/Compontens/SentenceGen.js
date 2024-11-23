@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { OpenAI } from "openai";
 import promptToUrl from "./funcs/promptToUrl";
 import arrow from "../assets/arrow.png";
+import LoadingScreen from "./LoadingScreen";
 
 const openai = new OpenAI({
   apiKey: process.env.REACT_APP_OPENAI_API_KEY,
