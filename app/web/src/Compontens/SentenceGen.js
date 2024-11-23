@@ -115,19 +115,19 @@ const [selectedHash, setSelectedHash] = useState([]);
 
   useEffect(()=>{
     console.log("!")
-    // fetchOpenAIResponse();
-    setTimeout(()=>{
-        const test = {
-            "all": [
-              {
-                "zdanie": "W czasach średniowiecza rycerze często nosili zbroje, a ich ulubioną przekąską były $ #.",
-                "$": ["złote jabłka", "kiełbaski w zbroi", "przekąski z zamku", "ciastka z miodem", "mrożony ogórek", "słodkie trociny", "serowe talerze", "muffinki od królowej", "ciasto z rycerzem", "pączki w zbroi"],
-                "#": ["na turnieje", "w czasie walki", "podczas uczty", "na koniach", "w tawernach", "z wielbłądami", "na pikniku", "w lochach", "w dymie bitewnym", "podczas snu"]
-              }
-            ]
-          }
-        setResponseText(test);
-    },1000)
+    fetchOpenAIResponse();
+    // setTimeout(()=>{
+    //     const test = {
+    //         "all": [
+    //           {
+    //             "zdanie": "W czasach średniowiecza rycerze często nosili zbroje, a ich ulubioną przekąską były $ #.",
+    //             "$": ["złote jabłka", "kiełbaski w zbroi", "przekąski z zamku", "ciastka z miodem", "mrożony ogórek", "słodkie trociny", "serowe talerze", "muffinki od królowej", "ciasto z rycerzem", "pączki w zbroi"],
+    //             "#": ["na turnieje", "w czasie walki", "podczas uczty", "na koniach", "w tawernach", "z wielbłądami", "na pikniku", "w lochach", "w dymie bitewnym", "podczas snu"]
+    //           }
+    //         ]
+    //       }
+    //     setResponseText(test);
+    // },1000)
   },[])
  useEffect(()=>{
     if(responseText)
