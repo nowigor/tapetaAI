@@ -28,7 +28,7 @@ const SentenceGen = () => {
     const secondParts = parts[1].split('#');
   
     return (
-      <>
+      <div>
         <span>{parts[0]}</span>
         <select value={selectedDollar} onChange={(e) => setSelectedDollar(e.target.value)}>
           {responseText.all[0]["$"].map((item, index) => (
@@ -46,7 +46,7 @@ const SentenceGen = () => {
           ))}
         </select>
         <span>{secondParts[1]}</span>
-      </>
+      </div>
     );
   };
 
@@ -168,28 +168,37 @@ const SentenceGen = () => {
     {
       setSenType(1)
     }
+    // fetchOpenAIResponse();
   }
   return (
     <div className="flex flex-col  items-center">
-      <div className="bg-red-300 w-full">
-        <h1 className="p-4 text-4xl text-center font-bold">Stwórz swoją wymarzoną tapetę !</h1>
+      <div className="bg-black w-full">
+        <h1 className="p-4 text-4xl text-white text-center font-bold">TAPET.IO</h1>
       </div>
-          <div className="h-[250px] mt-5 w-4/5 bg-green-200 rounded-xl">
-            <div className="bg-red-200 h-3/4">
-              <p className="text-left p-3 text-xl">{renderSentence()}</p>
+          <div className="h-[230px] mt-5 w-4/5 bg-gray-200 rounded-xl shadow-2xl">
+            <div className="  h-3/4">
+              <p className="text-left p-4 text-2xl">{renderSentence()}</p>
             </div>
-            <div className=" h-1/4 bg-red-400 flex flex-col items-center justify-center">
-              <button className="p-2 bg-white " onClick={fetchOpenAIResponse} di sabled={loading}>{loading ? 'Ładowanie...' : 'Zmień zdanie'}</button> 
+            <div className=" h-1/4 flex flex-col items-center justify-center">
             </div>
           </div>
-          <div className="w-full flex items-center justify-center">
-              <button className=" border pl-5 pr-5 mt-3 bg-gray-100 rounded w-4/5 h-[50px]" onClick={generateFinalSentence}>Ustaw tapetę</button>
+          <div className="w-full flex items-center justify-center  mt-5 gap-5 font-semibold text-xl ">
+            <button className=" flex items-center justify-center p-5 bg-white  h-[65px] w-1/3" onClick={fetchOpenAIResponse} di sabled={loading}>{loading ? 'Ładowanie...' : 'Zmień zdanie'}</button> 
+            <button className=" flex items-center justify-center text-white  bg-black  h-[65px] p-5 w-1/3" onClick={generateFinalSentence}>Ustaw tapetę</button>
           </div>
           <div className=" w-[95%] flex flex-col items-end">
-            <button onClick={handleClick} className="w-[135px] ml-2 p-2 bg-gray-300 mt-2 flex items-center justify-item-center"> 
+
+            {sentype ? <> <button onClick={handleClick}  className="w-[135px]  ml-2 shadow-xl rounded-md p-2 bg-[#89e8af] font-semibold mt-2 flex items-center justify-item-center"> 
               <img src={arrow} className="w-[10px] mr-1"></img>
-            {sentype === 0 ? "Futurystyczne" : "Historyczne" }
+            Futurystyczne
+            </button></> :
+            <> 
+            <button onClick={handleClick} className="w-[135px] ml-2 shadow-xl rounded-md p-2 bg-[#ffbc56] font-semibold  mt-2 flex items-center justify-item-center"> 
+              <img src={arrow} className="w-[10px] mr-1"></img>
+            Historyczne
             </button>
+            </>}
+           
           </div>
     </div>
      
