@@ -3,6 +3,8 @@ import { useEffect } from "react";
 import { OpenAI } from "openai";
 import ImageGen from "./ImageGen";
 
+import promptToUrl from "./funcs/promptToUrl";
+
 const openai = new OpenAI({
   apiKey: process.env.REACT_APP_OPENAI_API_KEY,
   dangerouslyAllowBrowser: true   // Zamień na swój klucz API
@@ -22,7 +24,7 @@ const SentenceGen = () => {
   const [loading, setLoading] = useState(false);
   const [type, setType] = useState(0);
   const [finalSentence, setFinalSentence] = useState('');  // Dodajemy stan do przechowywania pełnego zdania
-  
+  const [image, setImage] = useState('');
 
 
 
@@ -63,10 +65,13 @@ const [selectedHash, setSelectedHash] = useState([]);
 
   // Funkcja do generowania pełnego zdania
   const generateFinalSentence = () => {
-    const sentence = responseText.all[0].zdanie
+      const sentence = responseText.all[0].zdanie
       .replace('$', selectedDollar)
       .replace('#', selectedHash);
-    setFinalSentence(sentence);  // Ustawiamy wygenerowane zdanie w stanie
+      setFinalSentence(sentence);  // Ustawiamy wygenerowane zdanie w stanie
+    //   promptToUrl(sentence).then((imgStr)=>{
+    //     setImage(imgStr);
+    //   });
   };
 
   // Funkcja do pobierania odpowiedzi z OpenAI
@@ -112,7 +117,6 @@ const [selectedHash, setSelectedHash] = useState([]);
   useEffect(()=>{
     console.log("!")
     // fetchOpenAIResponse();
-
     setTimeout(()=>{
         const test = {
             "all": [
@@ -124,9 +128,16 @@ const [selectedHash, setSelectedHash] = useState([]);
             ]
           }
         setResponseText(test);
-    },5000)
+    },1000)
   },[])
+ useEffect(()=>{
+    if(responseText)
+    {
+        setSelectedDollar(responseText.all[0]["$"][0]);
+        setSelectedHash(responseText.all[0]["#"][0]);
+    }
 
+ },[responseText])
   if(!responseText )
   {
       
@@ -144,7 +155,6 @@ const [selectedHash, setSelectedHash] = useState([]);
       <p>Zdanie: {renderSentence()}</p>
       <button onClick={generateFinalSentence}>Generuj pełne zdanie</button>
       {finalSentence && <p>Wygenerowane zdanie: {finalSentence}</p>}
-      <ImageGen sentance={finalSentence}/>
     </div>
   );
 };

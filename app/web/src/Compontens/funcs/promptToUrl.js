@@ -1,7 +1,7 @@
 import { OpenAI } from "openai";
 const promptToUrl = async (promptString) => {
     const openai = new OpenAI({
-        apiKey: "cos",
+        apiKey: process.env.REACT_APP_OPENAI_API_KEY,
         dangerouslyAllowBrowser: true
       });
 
