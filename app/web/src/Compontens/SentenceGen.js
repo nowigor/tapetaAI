@@ -2,9 +2,8 @@ import React, { useState} from "react";
 import { useEffect } from "react";
 import { OpenAI } from "openai";
 import ImageGen from "./ImageGen";
-
 import promptToUrl from "./funcs/promptToUrl";
-
+// const { ipcRenderer } = window.require('electron');
 const openai = new OpenAI({
   apiKey: process.env.REACT_APP_OPENAI_API_KEY,
   dangerouslyAllowBrowser: true   // Zamień na swój klucz API
@@ -25,13 +24,6 @@ const SentenceGen = () => {
   const [type, setType] = useState(0);
   const [finalSentence, setFinalSentence] = useState('');  // Dodajemy stan do przechowywania pełnego zdania
   const [image, setImage] = useState('');
-
-
-
-
-
-//   const [selectedDollar, setSelectedDollar] = useState(test.all[0]["$"][0]);
-//   const [selectedHash, setSelectedHash] = useState(test.all[0]["#"][0]);
 
 const [selectedDollar, setSelectedDollar] = useState([]);
 const [selectedHash, setSelectedHash] = useState([]);
@@ -65,13 +57,20 @@ const [selectedHash, setSelectedHash] = useState([]);
 
   // Funkcja do generowania pełnego zdania
   const generateFinalSentence = () => {
-      const sentence = responseText.all[0].zdanie
+    const sentence = responseText.all[0].zdanie
       .replace('$', selectedDollar)
       .replace('#', selectedHash);
-      setFinalSentence(sentence);  // Ustawiamy wygenerowane zdanie w stanie
-    //   promptToUrl(sentence).then((imgStr)=>{
-    //     setImage(imgStr);
-    //   });
+    setFinalSentence(sentence);  // Ustawiamy wygenerowane zdanie w stanie
+    
+    promptToUrl(sentence).then((imageUrl) => {
+      window.api.setWallpaper(imageUrl)
+        .then(response => {
+          console.log(response);  // Informacja zwrotna z procesu głównego
+        })
+        .catch(error => {
+          console.error('Błąd podczas ustawiania tapety:', error);
+        });
+    });
   };
 
   // Funkcja do pobierania odpowiedzi z OpenAI
@@ -87,7 +86,7 @@ const [selectedHash, setSelectedHash] = useState([]);
             "content": [
               {
                 "type": "text",
-                "text": "stwórz zdanie o tematyce " + type[0] + " z 2 lukami (luka 1 oznaczona $, luka 2 oznaczona #) w miejscach znaków mają trafić humorystyczne wyrazu pasujące gramatycznie i stylistycznie, do kazdej luki podaj 10 opcji. struktura pliku json:\n{\r\n    \"all\": [\r\n        {\r\n            \"zdanie\": \"\",\r\n            \"$\": [],\r\n            \"#\": []\r\n        }\r\n    ]\r\n}\n"
+                "text": "stwórz zdanie o tematyce " + type[1] + " z 2 lukami (luka 1 oznaczona $, luka 2 oznaczona #) w miejscach znaków mają trafić humorystyczne wyrazu pasujące gramatycznie i stylistycznie, do kazdej luki podaj 10 opcji. struktura pliku json:\n{\r\n    \"all\": [\r\n        {\r\n            \"zdanie\": \"\",\r\n            \"$\": [],\r\n            \"#\": []\r\n        }\r\n    ]\r\n}\n"
               }
             ]
           }

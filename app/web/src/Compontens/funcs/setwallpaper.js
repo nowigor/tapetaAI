@@ -2,7 +2,7 @@ import axios from 'axios';
 import fs from 'fs';
 import {setWallpaper} from "wallpaper";
 
-async function downloadAndSetWallpaper(imageUrl) {
+export default async function downloadAndSetWallpaper(imageUrl) {
     try {
         const savePath = "./" + generateFileName() +".png";
         const response = await axios({
