@@ -5,15 +5,28 @@ const promptToUrl = async (promptString) => {
         dangerouslyAllowBrowser: true
       });
 
-      // Generowanie obrazu
-      const response = await openai.images.generate({
-        prompt: promptString,
-        n: 1,
-        size: "1024x1024",
-        model: "dall-e-3"
-      });
+      try {
+        const response = await openai.images.generate({
+          prompt: promptString,
+          n: 1,
+          size: "1024x1024",
+          model: "dall-e-3",
+        });
+    
+        if (response && response.data && response.data[0] && response.data[0].url) {
+          console.log(response);
+          return response.data[0].url;
+        } else {
+          console.error("Nieprawidłowa odpowiedź z API");
+          return "";
+        }
+      } catch (error) {
+        // Obsługa błędów
+        console.error("Wystąpił błąd:", error);
+        return ""; // Zwracamy false w przypadku błędu
+      }
 
-      return response.data[0].url;
+      
 }
 
 export default promptToUrl;
