@@ -2,6 +2,7 @@ import React, { useState} from "react";
 import { useEffect } from "react";
 import { OpenAI } from "openai";
 import promptToUrl from "./funcs/promptToUrl";
+
 const openai = new OpenAI({
   apiKey: process.env.REACT_APP_OPENAI_API_KEY,
   dangerouslyAllowBrowser: true   
@@ -165,7 +166,6 @@ const SentenceGen = () => {
   }
   return (
     <div>
-
       <h1>Generuj Zdanie</h1>
        <button onClick={fetchOpenAIResponse} disabled={loading}>
         {loading ? 'Ładowanie...' : 'Zmień zdanie'}
@@ -175,7 +175,6 @@ const SentenceGen = () => {
           </button>
           <p>Zdanie: {renderSentence()}</p>
           <button onClick={generateFinalSentence}>Generuj pełne zdanie</button>
-          {finalSentence && <p>Wygenerowane zdanie: {finalSentence}</p>}
     </div>
      
   );
