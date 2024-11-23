@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { OpenAI } from "openai";
 import promptToUrl from "./funcs/promptToUrl";
 import arrow from "../assets/arrow.png";
+import LoadingScreen from "./LoadingScreen";
 
 const openai = new OpenAI({
   apiKey: process.env.REACT_APP_OPENAI_API_KEY,
@@ -51,6 +52,7 @@ const SentenceGen = () => {
 
  
   const generateFinalSentence = () => {
+    setLoading(true);
     const sentence = responseText.all[0].zdanie
       .replace('$', selectedDollar)
       .replace('#', selectedHash);
@@ -64,10 +66,12 @@ const SentenceGen = () => {
           console.log("FIUFIFIF")
           window.api.setWallpaper(imageUrl)
             .then(response => {
-              console.log(response);  
+              console.log(response);
+              setLoading(false);
             })
             .catch(error => {
               console.error('Błąd podczas ustawiania tapety:', error);
+              setLoading(false);
             });
         }
       });
