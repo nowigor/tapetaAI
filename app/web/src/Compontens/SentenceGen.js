@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState} from "react";
+import { useEffect } from "react";
 import { OpenAI } from "openai";
 import ImageGen from "./ImageGen";
 
@@ -8,11 +9,15 @@ const openai = new OpenAI({
 });
 
 const SentenceGen = () => {
+    useEffect(() => {
+        // Ta funkcja wykona się tylko raz, po pierwszym renderze komponentu
+        console.log("Komponent został załadowany.");
+    
+        return () => {
+          console.log("Komponent jest czyszczony.");
+        };
+      }, []);  // Pusta tablica zależności
   const [responseText, setResponseText] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [type, setType] = useState(0);
-  const [finalSentence, setFinalSentence] = useState('');  // Dodajemy stan do przechowywania pełnego zdania
-  
   const test = {
     "all": [
       {
@@ -22,19 +27,26 @@ const SentenceGen = () => {
       }
     ]
   }
+  const [loading, setLoading] = useState(false);
+  const [type, setType] = useState(0);
+  const [finalSentence, setFinalSentence] = useState('');  // Dodajemy stan do przechowywania pełnego zdania
+  
 
-  const [selectedDollar, setSelectedDollar] = useState(test.all[0]["$"][0]);
-  const [selectedHash, setSelectedHash] = useState(test.all[0]["#"][0]);
+
+
+
+  const [selectedDollar, setSelectedDollar] = useState(responseText.all[0]["$"][0]);
+  const [selectedHash, setSelectedHash] = useState(responseText.all[0]["#"][0]);
 
   const renderSentence = () => {
-    const parts = test.all[0].zdanie.split('$');
+    const parts = responseText.all[0].zdanie.split('$');
     const secondParts = parts[1].split('#');
   
     return (
       <>
         <span>{parts[0]}</span>
         <select value={selectedDollar} onChange={(e) => setSelectedDollar(e.target.value)}>
-          {test.all[0]["$"].map((item, index) => (
+          {responseText.all[0]["$"].map((item, index) => (
             <option key={index} value={item}>
               {item}
             </option>
@@ -42,7 +54,7 @@ const SentenceGen = () => {
         </select>
         <span>{secondParts[0]}</span>
         <select value={selectedHash} onChange={(e) => setSelectedHash(e.target.value)}>
-          {test.all[0]["#"].map((item, index) => (
+          {responseText.all[0]["#"].map((item, index) => (
             <option key={index} value={item}>
               {item}
             </option>
@@ -55,7 +67,7 @@ const SentenceGen = () => {
 
   // Funkcja do generowania pełnego zdania
   const generateFinalSentence = () => {
-    const sentence = test.all[0].zdanie
+    const sentence = responseText.all[0].zdanie
       .replace('$', selectedDollar)
       .replace('#', selectedHash);
     setFinalSentence(sentence);  // Ustawiamy wygenerowane zdanie w stanie
@@ -92,7 +104,8 @@ const SentenceGen = () => {
       console.log(response.choices[0].message);
       console.log(response.choices[0].message.content);
       // Odbierz odpowiedź i ustaw w stanie
-      setResponseText(response.choices[0].message.content.trim());
+      setResponseText(response.choices[0].message.content);
+      console.log("RES", responseText);
     } catch (error) {
       console.error('Błąd API OpenAI:', error);
       setResponseText('Wystąpił błąd podczas komunikacji z API.');
@@ -102,16 +115,15 @@ const SentenceGen = () => {
 
   return (
     <div>
-      {/* <button onClick={fetchOpenAIResponse} disabled={loading}>
+       <button onClick={fetchOpenAIResponse} disabled={loading}>
         {loading ? 'Ładowanie...' : 'Zmień zdanie'}
-      </button> */}
-      {/* <pre>{responseText}</pre> */}
+      </button> 
+       <pre>{responseText}</pre> 
       <h1>Generuj Zdanie</h1>
       <p>Zdanie: {renderSentence()}</p>
       <button onClick={generateFinalSentence}>Generuj pełne zdanie</button>
       {finalSentence && <p>Wygenerowane zdanie: {finalSentence}</p>}
       <ImageGen sentance={finalSentence}/>
-
     </div>
   );
 };
