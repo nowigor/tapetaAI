@@ -17,16 +17,8 @@ const SentenceGen = () => {
           console.log("Komponent jest czyszczony.");
         };
       }, []);  // Pusta tablica zależności
-  const [responseText, setResponseText] = useState('');
-  const test = {
-    "all": [
-      {
-        "zdanie": "W czasach średniowiecza rycerze często nosili zbroje, a ich ulubioną przekąską były $ #.",
-        "$": ["złote jabłka", "kiełbaski w zbroi", "przekąski z zamku", "ciastka z miodem", "mrożony ogórek", "słodkie trociny", "serowe talerze", "muffinki od królowej", "ciasto z rycerzem", "pączki w zbroi"],
-        "#": ["na turnieje", "w czasie walki", "podczas uczty", "na koniach", "w tawernach", "z wielbłądami", "na pikniku", "w lochach", "w dymie bitewnym", "podczas snu"]
-      }
-    ]
-  }
+  const [responseText, setResponseText] = useState(null);
+  
   const [loading, setLoading] = useState(false);
   const [type, setType] = useState(0);
   const [finalSentence, setFinalSentence] = useState('');  // Dodajemy stan do przechowywania pełnego zdania
@@ -35,8 +27,12 @@ const SentenceGen = () => {
 
 
 
-  const [selectedDollar, setSelectedDollar] = useState(responseText.all[0]["$"][0]);
-  const [selectedHash, setSelectedHash] = useState(responseText.all[0]["#"][0]);
+
+//   const [selectedDollar, setSelectedDollar] = useState(test.all[0]["$"][0]);
+//   const [selectedHash, setSelectedHash] = useState(test.all[0]["#"][0]);
+
+const [selectedDollar, setSelectedDollar] = useState([]);
+const [selectedHash, setSelectedHash] = useState([]);
 
   const renderSentence = () => {
     const parts = responseText.all[0].zdanie.split('$');
@@ -104,7 +100,7 @@ const SentenceGen = () => {
       console.log(response.choices[0].message);
       console.log(response.choices[0].message.content);
       // Odbierz odpowiedź i ustaw w stanie
-      setResponseText(response.choices[0].message.content);
+      setResponseText(JSON.parse(response.choices[0].message.content));
       console.log("RES", responseText);
     } catch (error) {
       console.error('Błąd API OpenAI:', error);
@@ -113,12 +109,37 @@ const SentenceGen = () => {
     setLoading(false);
   };
 
+  useEffect(()=>{
+    console.log("!")
+    // fetchOpenAIResponse();
+
+    setTimeout(()=>{
+        const test = {
+            "all": [
+              {
+                "zdanie": "W czasach średniowiecza rycerze często nosili zbroje, a ich ulubioną przekąską były $ #.",
+                "$": ["złote jabłka", "kiełbaski w zbroi", "przekąski z zamku", "ciastka z miodem", "mrożony ogórek", "słodkie trociny", "serowe talerze", "muffinki od królowej", "ciasto z rycerzem", "pączki w zbroi"],
+                "#": ["na turnieje", "w czasie walki", "podczas uczty", "na koniach", "w tawernach", "z wielbłądami", "na pikniku", "w lochach", "w dymie bitewnym", "podczas snu"]
+              }
+            ]
+          }
+        setResponseText(test);
+    },5000)
+  },[])
+
+  if(!responseText )
+  {
+      
+      return(
+          <button onClick={fetchOpenAIResponse}>Generuj pełne zdanie</button>
+      )
+  }
   return (
     <div>
        <button onClick={fetchOpenAIResponse} disabled={loading}>
         {loading ? 'Ładowanie...' : 'Zmień zdanie'}
       </button> 
-       <pre>{responseText}</pre> 
+       {/* <pre>{responseText}</pre>  */}
       <h1>Generuj Zdanie</h1>
       <p>Zdanie: {renderSentence()}</p>
       <button onClick={generateFinalSentence}>Generuj pełne zdanie</button>
