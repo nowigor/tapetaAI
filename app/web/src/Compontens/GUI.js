@@ -6,7 +6,7 @@ const GUI = () =>{
             {/* <LoadingScreen/> */}
             <SentenceGen/>
         </div>
-    )
+    ) 
 
 }
 export default GUI
