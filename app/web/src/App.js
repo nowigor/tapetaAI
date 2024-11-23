@@ -2,7 +2,7 @@ import GUI from './Compontens/GUI';
 
 function App() {
   return (
-    <div className="App">
+    <div className="box-wrapper ">
      <GUI/>
     </div>
   );

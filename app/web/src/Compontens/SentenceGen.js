@@ -2,6 +2,7 @@ import React, { useState} from "react";
 import { useEffect } from "react";
 import { OpenAI } from "openai";
 import promptToUrl from "./funcs/promptToUrl";
+import arrow from "../assets/arrow.png";
 
 const openai = new OpenAI({
   apiKey: process.env.REACT_APP_OPENAI_API_KEY,
@@ -165,16 +166,27 @@ const SentenceGen = () => {
     }
   }
   return (
-    <div>
-      <h1>Generuj Zdanie</h1>
-       <button onClick={fetchOpenAIResponse} disabled={loading}>
-        {loading ? 'Ładowanie...' : 'Zmień zdanie'}
-      </button> 
-          <button onClick={handleClick}> 
-          {sentype === 0 ? "Futurystyczne" : "Historyczne" }
-          </button>
-          <p>Zdanie: {renderSentence()}</p>
-          <button onClick={generateFinalSentence}>Generuj pełne zdanie</button>
+    <div className="flex flex-col  items-center">
+      <div className="bg-red-300 w-full">
+        <h1 className="p-4 text-4xl text-center font-bold">Stwórz swoją wymarzoną tapetę !</h1>
+      </div>
+          <div className="h-[250px] mt-5 w-4/5 bg-green-200 rounded-xl">
+            <div className="bg-red-200 h-3/4">
+              <p className="text-left p-3 text-xl">{renderSentence()}</p>
+            </div>
+            <div className=" h-1/4 bg-red-400 flex flex-col items-center justify-center">
+              <button className="p-2 bg-white " onClick={fetchOpenAIResponse} di sabled={loading}>{loading ? 'Ładowanie...' : 'Zmień zdanie'}</button> 
+            </div>
+          </div>
+          <div className="w-full flex items-center justify-center">
+              <button className=" border pl-5 pr-5 mt-3 bg-gray-100 rounded w-4/5 h-[50px]" onClick={generateFinalSentence}>Ustaw tapetę</button>
+          </div>
+          <div className=" w-[95%] flex flex-col items-end">
+            <button onClick={handleClick} className="w-[135px] ml-2 p-2 bg-gray-300 mt-2 flex items-center justify-item-center"> 
+              <img src={arrow} className="w-[10px] mr-1"></img>
+            {sentype === 0 ? "Futurystyczne" : "Historyczne" }
+            </button>
+          </div>
     </div>
      
   );
