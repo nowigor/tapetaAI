@@ -5,7 +5,7 @@ import loadingGif from "../assets/loading.gif";
 const LoadingScreen = () => {
 
 return (
-    <div>
+    <div className="">
       <img src={loadingGif}></img>
     </div>
      

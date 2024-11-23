@@ -2,6 +2,7 @@ import React, { useState} from "react";
 import { useEffect } from "react";
 import { OpenAI } from "openai";
 import promptToUrl from "./funcs/promptToUrl";
+import LoadingScreen from "./LoadingScreen";
 
 const openai = new OpenAI({
   apiKey: process.env.REACT_APP_OPENAI_API_KEY,
@@ -50,6 +51,7 @@ const SentenceGen = () => {
 
  
   const generateFinalSentence = () => {
+    setLoading(true);
     const sentence = responseText.all[0].zdanie
       .replace('$', selectedDollar)
       .replace('#', selectedHash);
@@ -63,10 +65,12 @@ const SentenceGen = () => {
           console.log("FIUFIFIF")
           window.api.setWallpaper(imageUrl)
             .then(response => {
-              console.log(response);  
+              console.log(response);
+              setLoading(false);
             })
             .catch(error => {
               console.error('Błąd podczas ustawiania tapety:', error);
+              setLoading(false);
             });
         }
       });
@@ -168,13 +172,18 @@ const SentenceGen = () => {
     <div>
       <h1>Generuj Zdanie</h1>
        <button onClick={fetchOpenAIResponse} disabled={loading}>
-        {loading ? 'Ładowanie...' : 'Zmień zdanie'}
+       Zmień zdanie
       </button> 
           <button onClick={handleClick}> 
           {sentype === 0 ? "Futurystyczne" : "Historyczne" }
           </button>
           <p>Zdanie: {renderSentence()}</p>
-          <button onClick={generateFinalSentence}>Generuj pełne zdanie</button>
+          {!loading
+          ? <button onClick={generateFinalSentence}>Generuj pełne zdanie</button>
+          : <LoadingScreen></LoadingScreen>
+        }
+
+          
     </div>
      
   );
