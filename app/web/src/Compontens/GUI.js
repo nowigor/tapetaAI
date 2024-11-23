@@ -2,8 +2,9 @@ import SentenceGen from "./SentenceGen"
 import LoadingScreen from "./LoadingScreen"
 const GUI = () =>{
     return(
-        <div>
-            <LoadingScreen/>
+        <div className="bg-primary">
+            {/* <LoadingScreen/> */}
+            <SentenceGen/>
         </div>
     )
 
