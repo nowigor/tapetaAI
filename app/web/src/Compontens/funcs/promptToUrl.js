@@ -1,5 +1,5 @@
 import { OpenAI } from "openai";
-const func = async (promptString) => {
+const promptToUrl = async (promptString) => {
     const openai = new OpenAI({
         apiKey: "cos",
         dangerouslyAllowBrowser: true
@@ -15,3 +15,5 @@ const func = async (promptString) => {
 
       return response.data[0].url;
 }
+
+export default promptToUrl;
