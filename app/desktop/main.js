@@ -20,13 +20,13 @@ function createWindow() {
       devTools: true
     },
     autoHideMenuBar: true,
-    icon: path.join(__dirname, 'icona.ico'),
+    icon: path.join(__dirname, 'icon.ico'),
     resizable: false
   });
 
-  win.loadURL('http://localhost:3000');
-  mainWindow.setTitle('TAPET.IO');
-    // win.loadFile(path.join(__dirname, 'build', 'index.html'))
+  // win.loadURL('http://localhost:3000');
+    win.setTitle('TAPET.IO');
+    win.loadFile(path.join(__dirname, 'build', 'index.html'))
 }
 
 app.whenReady().then(() => {

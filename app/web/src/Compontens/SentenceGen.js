@@ -14,6 +14,7 @@ const SentenceGen = () => {
 
   const [responseText, setResponseText] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [whatLoads, setWhatLoads] = useState("text");
 
   const [sentype, setSenType] = useState(0);
   const [finalSentence, setFinalSentence] = useState(''); 
@@ -53,6 +54,8 @@ const SentenceGen = () => {
  
   const generateFinalSentence = () => {
     setLoading(true);
+    setWhatLoads("image");
+
     const sentence = responseText.all[0].zdanie
       .replace('$', selectedDollar)
       .replace('#', selectedHash);
@@ -83,6 +86,7 @@ const SentenceGen = () => {
 
   const fetchOpenAIResponse = async () => {
     setLoading(true);
+    setWhatLoads("text");
     try {
       if (!navigator.onLine) {
         setLoading(false);
@@ -130,19 +134,19 @@ const SentenceGen = () => {
   };
 
   useEffect(()=>{
-    // fetchOpenAIResponse();
-    setTimeout(()=>{
-        const test = {
-            "all": [
-              {
-                "zdanie": "W czasach średniowiecza rycerze często nosili zbroje, a ich ulubioną przekąską były $ #.",
-                "$": ["złote jabłka", "kiełbaski w zbroi", "przekąski z zamku", "ciastka z miodem", "mrożony ogórek", "słodkie trociny", "serowe talerze", "muffinki od królowej", "ciasto z rycerzem", "pączki w zbroi"],
-                "#": ["na turnieje", "w czasie walki", "podczas uczty", "na koniach", "w tawernach", "z wielbłądami", "na pikniku", "w lochach", "w dymie bitewnym", "podczas snu"]
-              }
-            ]
-          }
-        setResponseText(test);
-    },1000)
+    fetchOpenAIResponse();
+    // setTimeout(()=>{
+    //     const test = {
+    //         "all": [
+    //           {
+    //             "zdanie": "W czasach średniowiecza rycerze często nosili zbroje, a ich ulubioną przekąską były $ #.",
+    //             "$": ["złote jabłka", "kiełbaski w zbroi", "przekąski z zamku", "ciastka z miodem", "mrożony ogórek", "słodkie trociny", "serowe talerze", "muffinki od królowej", "ciasto z rycerzem", "pączki w zbroi"],
+    //             "#": ["na turnieje", "w czasie walki", "podczas uczty", "na koniach", "w tawernach", "z wielbłądami", "na pikniku", "w lochach", "w dymie bitewnym", "podczas snu"]
+    //           }
+    //         ]
+    //       }
+    //     setResponseText(test);
+    // },1000)
   },[])
  useEffect(()=>{
     if(responseText)
@@ -155,7 +159,7 @@ const SentenceGen = () => {
   if(!responseText )
   {
       return(
-          <button onClick={fetchOpenAIResponse}>Generuj pełne zdanie</button>
+        <div style={{ display: loading ? "none" : "block" }}></div>
       )
   }
 
@@ -168,9 +172,12 @@ const SentenceGen = () => {
     {
       setSenType(1)
     }
-    // fetchOpenAIResponse();
+    fetchOpenAIResponse();
   }
   return (
+    <div>
+    {loading && <LoadingScreen action={whatLoads}/>}
+      <div style={{ display: loading ? "none" : "block" }}>
     <div className="flex flex-col  items-center">
       <div className="bg-black w-full">
         <h1 className="p-4 text-4xl text-white text-center font-bold">TAPET.IO</h1>
@@ -183,23 +190,25 @@ const SentenceGen = () => {
             </div>
           </div>
           <div className="w-full flex items-center justify-center  mt-5 gap-5 font-semibold text-xl ">
-            <button className=" flex items-center justify-center p-5 bg-white  h-[65px] w-1/3" onClick={fetchOpenAIResponse} di sabled={loading}>{loading ? 'Ładowanie...' : 'Zmień zdanie'}</button> 
-            <button className=" flex items-center justify-center text-white  bg-black  h-[65px] p-5 w-1/3" onClick={generateFinalSentence}>Ustaw tapetę</button>
+            <button className=" flex items-center justify-center p-5 bg-white hover:bg-gray-100 h-[65px] w-1/3" onClick={fetchOpenAIResponse} di sabled={loading}>{loading ? 'Ładowanie...' : 'Nowy temat'}</button> 
+            <button className=" flex items-center justify-center text-white  bg-black hover:bg-gray-900  h-[65px] p-5 w-1/3" onClick={generateFinalSentence}>Ustaw tapetę</button>
           </div>
           <div className=" w-[95%] flex flex-col items-end">
 
-            {sentype ? <> <button onClick={handleClick}  className="w-[135px]  ml-2 shadow-xl rounded-md p-2 bg-[#89e8af] font-semibold mt-2 flex items-center justify-item-center"> 
-              <img src={arrow} className="w-[10px] mr-1"></img>
-            Futurystyczne
+            {sentype ? <> <button onClick={handleClick}  className="w-[120px]  ml-2 shadow-xl rounded-md p-2 bg-[#89e8af] font-semibold mt-2 flex items-center justify-item-center"> 
+              <img src={arrow} className="w-[10px] ml-1 mr-1"></img>
+            Przyszłość
             </button></> :
             <> 
-            <button onClick={handleClick} className="w-[135px] ml-2 shadow-xl rounded-md p-2 bg-[#ffbc56] font-semibold  mt-2 flex items-center justify-item-center"> 
-              <img src={arrow} className="w-[10px] mr-1"></img>
-            Historyczne
+            <button onClick={handleClick} className="w-[120px] ml-2 shadow-xl rounded-md p-2 bg-[#ffbc56] font-semibold  mt-2 flex items-center justify-item-center"> 
+              <img src={arrow} className="w-[10px] ml-1 mr-1"></img>
+            Przeszłość
             </button>
             </>}
            
           </div>
+    </div>
+    </div>
     </div>
      
   );

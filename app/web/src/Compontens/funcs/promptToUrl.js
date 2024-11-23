@@ -9,8 +9,9 @@ const promptToUrl = async (promptString) => {
         const response = await openai.images.generate({
           prompt: promptString,
           n: 1,
-          size: "1024x1024",
+          size: "1792x1024",
           model: "dall-e-3",
+          quality: "hd",
         });
     
         if (response && response.data && response.data[0] && response.data[0].url) {

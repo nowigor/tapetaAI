@@ -27,3 +27,11 @@ opacity: 0.8;
 background-image:  repeating-radial-gradient( circle at 0 0, transparent 0, #e5e5f7 13px ), repeating-linear-gradient( #f7de4555, #f7de45 );
 background-color: #ddb2d2;
 }
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
